@@ -8,18 +8,17 @@ Tech Stack:
 
 Must-have features:
 - User Account Creation
-    - Signup
-    - Login
-    - Edit
-    - Deletion
+    - Signup -- DONE
+    - Login -- DONE
+    - Deletion -- DONE
 - Journal Entries
-    - Create
-    - Read
-    - Update
+    - Create -- DONE
+    - Read -- DONE
+    - Update -- DONE
     - Delete
 - Mood Tracking
-    - Create
-    - Read
+    - Create -- DONE
+    - Read -- DONE
 
 Nice-to-have features:
 - Light / Dark Mode

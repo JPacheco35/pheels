@@ -15,7 +15,7 @@ API Must-have features:
     - Create -- DONE
     - Read -- DONE
     - Update -- DONE
-    - Delete
+    - Delete -- DONE
 - Mood Tracking
     - Create -- DONE
     - Read -- DONE

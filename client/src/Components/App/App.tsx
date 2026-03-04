@@ -2,6 +2,18 @@ import React from 'react';
 
 export default function App() {
   return (
-    <h1>Hello0000 World!</h1>
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+        color: 'white',
+        fontSize: '2rem',
+        fontFamily: 'Ubuntu, sans-serif',
+      }}
+    >
+      <h1>Hello World!!!</h1>
+    </div>
   );
 }

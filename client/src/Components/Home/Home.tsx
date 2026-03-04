@@ -2,6 +2,7 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import PageTransition from '../PageTransition/PageTransition.tsx';
 
 export default function Home() {
   const [auth, setAuth] = useState<'loading' | 'valid' | 'invalid'>('loading');
@@ -22,7 +23,18 @@ export default function Home() {
       });
   }, []);
 
-  if (auth === 'loading') return <div>Loading...</div>;
+  if (auth === 'loading')
+    return (
+      <PageTransition>
+        <div>Loading...</div>
+      </PageTransition>
+    );
+
   if (auth === 'invalid') return <Navigate to="/login" replace />;
-  return <h1>HOME PAGE</h1>;
+
+  return (
+    <PageTransition>
+      <h1>HOME PAGE</h1>
+    </PageTransition>
+  );
 }

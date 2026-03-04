@@ -6,6 +6,7 @@ import Home from '../Home/Home.tsx';
 import Redirect from '../Redirect/Redirect.tsx';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Footer from '../Footer/Footer.tsx';
+import { AnimatePresence } from 'framer-motion';
 
 export default function App() {
   return (
@@ -17,16 +18,18 @@ export default function App() {
         height: '100vh',
       }}
     >
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Navigate to="/login" />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="*" element={<Redirect />} />
-        </Routes>
-        <Footer />
-      </BrowserRouter>
+      <AnimatePresence mode="wait">
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Navigate to="/login" />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="*" element={<Redirect />} />
+          </Routes>
+          <Footer />
+        </BrowserRouter>
+      </AnimatePresence>
     </div>
   );
 }

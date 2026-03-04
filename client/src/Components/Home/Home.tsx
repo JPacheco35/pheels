@@ -1,5 +1,28 @@
 import React from 'react';
+import { Navigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 export default function Home() {
-  return (<h1>HOMEPAGE</h1> );
+  const [auth, setAuth] = useState<'loading' | 'valid' | 'invalid'>('loading');
+
+  // verify the user's token --> send user back to login if invalid
+  useEffect(() => {
+    const token = localStorage.getItem('authToken');
+    if (!token) return setAuth('invalid');
+
+    axios
+      .get('http://localhost:3000/api/verify', {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then(() => setAuth('valid'))
+      .catch(() => {
+        localStorage.removeItem('authToken');
+        setAuth('invalid');
+      });
+  }, []);
+
+  if (auth === 'loading') return <div>Loading...</div>;
+  if (auth === 'invalid') return <Navigate to="/login" replace />;
+  return <h1>HOME PAGE</h1>;
 }

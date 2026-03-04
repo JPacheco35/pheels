@@ -5,6 +5,7 @@ import Signup from '../Signup/Signup.tsx';
 import Home from '../Home/Home.tsx';
 import Redirect from '../Redirect/Redirect.tsx';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import Footer from '../Footer/Footer.tsx';
 
 export default function App() {
   return (
@@ -24,6 +25,7 @@ export default function App() {
           <Route path="/home" element={<Home />} />
           <Route path="*" element={<Redirect />} />
         </Routes>
+        <Footer />
       </BrowserRouter>
     </div>
   );

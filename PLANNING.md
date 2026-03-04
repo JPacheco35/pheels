@@ -21,9 +21,9 @@ API Must-have features:
     - Read -- DONE
 
 FRONTEND Must-have features:
-- Login / Signup Page
-  - Login Form
-  - Signup Form
+- Login / Signup Page -- DONE
+  - Login Form -- DONE
+  - Signup Form -- DONE
 - Home Page
     - Journal Entries Tab
       - Text Editor

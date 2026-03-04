@@ -13,6 +13,13 @@ const authMiddleware = require('./middleware/auth');
 require('dotenv').config();
 app.use(express.json());
 
+const cors = require('cors');
+
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true,
+}));
+
 
 // POST /api/health
 // This route returns OK if the api is running
@@ -70,7 +77,7 @@ app.post('/api/signup',async (req, res) => {
 // POST /api/login
 // This routes handles login with an existing account
 app.post('/api/login',async (req, res) => {
-
+  // console.log(req.body);
   try {
     // get login attempt info
     const {email, password} = req.body
@@ -357,6 +364,15 @@ app.delete('/api/moods/:id', authMiddleware, async (req, res) => {
   }
 });
 
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+// GET /api/verify
+// protected route that returns a JWT if the user is authenticated
+app.get('/api/verify', authMiddleware, (req, res) => {
+  res.status(200).json({ valid: true });
+});
 
 connect();
 app.listen(PORT, () => {

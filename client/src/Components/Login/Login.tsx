@@ -9,6 +9,7 @@ import {
   ActionIcon,
   Stack, Group,
 } from '@mantine/core';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from '@mantine/form';
 import '../../main.css';
 import './Login.css';
@@ -18,10 +19,15 @@ import {
 } from '@mantine/core';
 import axios from 'axios';
 
+
 function Login() {
   const { setColorScheme } = useMantineColorScheme();
   const colorScheme = useComputedColorScheme('dark');
-  const [submitted, setSubmitted] = useState(false);
+  // const [submitted, setSubmitted] = useState(false);
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [emailError, setEmailError] = useState<string | null>(null);
 
   const form = useForm({
     mode: 'uncontrolled',
@@ -31,10 +37,27 @@ function Login() {
     },
   });
 
-  const handleSubmit = async (vals: { email: string; password: string }) => {
+  const handleSubmit = async (email: string, password: string ) => {
     // POST
-    const res = await axios.post('http://localhost:3000/api/login', { vals });
-    console.log(res.data);
+    setLoading(true);
+    setPasswordError(null);
+    setEmailError(null);
+    try {
+      const res = await axios.post('http://localhost:3000/api/login', {email, password} );
+      console.log(res.data);
+
+      // store JWT in local storage and redirect to home page
+      if (res.data.authToken) {
+        localStorage.setItem('authToken', res.data.authToken); // save for later requests
+        navigate('/home');
+      }
+    }
+    catch (err: any) {
+      const msg = err.response?.data?.error || 'Something went wrong.';
+      if (msg.includes('email')) { setEmailError(msg); }
+      else { setPasswordError(msg); }
+    }
+    finally { setLoading(false); }
   };
 
   return (
@@ -44,14 +67,23 @@ function Login() {
         alignItems: 'center',
         justifyContent: 'center',
         minHeight: '100vh',
+        width: '100%',
+        marginTop: '-50px',
       }}
     >
-      <div style={{ width: 380 }}>
+      <div
+        style={{
+          width: '100%',
+          maxWidth: 480,
+          padding: '0 16px', // 👈 side padding on small screens
+          boxSizing: 'border-box',
+        }}
+      >
         {/* Header — outside the card */}
         <div
           style={{
             display: 'flex',
-            justifyContent: 'space-between',
+            justifyContent: 'center',
             alignItems: 'center',
             marginBottom: 24,
           }}
@@ -66,12 +98,13 @@ function Login() {
                 fontStyle: 'italic',
                 fontSize: 200,
                 lineHeight: 1,
+                paddingRight: 20,
               }}
             >
               Pheels
             </Title>
 
-            <Group mt={-20} justify="cener">
+            <Group mt={-20} justify="center">
               <Title
                 order={3}
                 size={30}
@@ -119,7 +152,7 @@ function Login() {
                 fontWeight: 700,
                 letterSpacing: '-0.5px',
                 color: 'light-dark(#0f1014, #f0f2ff)',
-                fontFamily: 'Georgia, serif',
+                fontFamily: 'Ubuntu, sans-serif',
               }}
             >
               Welcome Back :)
@@ -129,7 +162,7 @@ function Login() {
                 fontSize: 13,
                 color: 'light-dark(#666, #888)',
                 marginTop: 4,
-                fontFamily: 'Georgia, serif',
+                fontFamily: 'Ubuntu, sans-serif',
               }}
             >
               Sign in to continue
@@ -139,7 +172,7 @@ function Login() {
           <form
             onSubmit={form.onSubmit((values) => {
               console.log(values);
-              setSubmitted(true);
+              handleSubmit(values.email, values.password);
             })}
           >
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
@@ -148,9 +181,11 @@ function Login() {
                 placeholder="you@example.com"
                 key={form.key('email')}
                 {...form.getInputProps('email')}
+                error={emailError || form.errors.email}
                 styles={{
                   label: {
                     fontSize: 12,
+                    fontFamily: 'Ubuntu, sans-serif',
                     fontWeight: 600,
                     letterSpacing: '0.5px',
                     textTransform: 'uppercase',
@@ -164,6 +199,7 @@ function Login() {
                     background:
                       'light-dark(rgba(0,0,0,0.03), rgba(255,255,255,0.05))',
                     fontSize: 14,
+                    fontFamily: 'Ubuntu, sans-serif',
                     height: 44,
                   },
                 }}
@@ -174,6 +210,7 @@ function Login() {
                 type="password"
                 key={form.key('password')}
                 {...form.getInputProps('password')}
+                error={passwordError}
                 styles={{
                   label: {
                     fontSize: 12,
@@ -182,6 +219,7 @@ function Login() {
                     textTransform: 'uppercase',
                     color: 'light-dark(#444, #aaa)',
                     marginBottom: 6,
+                    fontFamily: 'Ubuntu, sans-serif',
                   },
                   input: {
                     borderRadius: 10,
@@ -200,26 +238,30 @@ function Login() {
               type="submit"
               fullWidth
               mt="xl"
+              loading={loading}
+              disabled={loading}
               style={{
-                temp:12,
+                temp: 12,
                 height: 46,
                 borderRadius: 12,
-                background: 'linear-gradient(135deg, #6494ff, #a855f7)',
+                background: 'linear-gradient(135deg, #1efcde, #ff02d7)',
                 border: 'none',
-                fontSize: 14,
+                fontSize: 30,
+                // fontStyle: 'bold',
                 fontWeight: 600,
+                fontFamily: 'Bisikan Senja, serif',
                 letterSpacing: '0.3px',
                 boxShadow: '0 4px 20px rgba(100,148,255,0.35)',
                 transition: 'transform 0.15s, box-shadow 0.15s',
               }}
-              onClick={() => handleSubmit(form.values)}
             >
-              {submitted ? '✓ Signed in' : 'Sign in'}
+              Sign in
             </Button>
 
             <Text
               style={{
-                fontSize: 13,
+                fontSize: 14,
+                fontFamily: 'Ubuntu, sans-serif',
                 textAlign: 'center',
                 marginTop: 20,
                 color: 'light-dark(#666, #888)',
@@ -228,6 +270,7 @@ function Login() {
               Don't have an account?{' '}
               <span
                 style={{ color: '#6494ff', cursor: 'pointer', fontWeight: 500 }}
+                onClick={() => navigate('/signup')}
               >
                 Create one
               </span>

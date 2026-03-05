@@ -33,7 +33,7 @@ export default function Home() {
   if (auth === 'invalid') return <Navigate to="/login" replace />;
 
   return (
-    <PageTransition>++
+    <PageTransition>
       <h1>HOME PAGE</h1>
     </PageTransition>
   );

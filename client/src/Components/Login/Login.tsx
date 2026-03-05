@@ -44,7 +44,8 @@ function Login() {
     setPasswordError(null);
     setEmailError(null);
     try {
-      const res = await axios.post('http://localhost:3000/api/login', {email, password} );
+      // const res = await axios.post('http://localhost:3000/api/login', {email, password} );
+      const res = await axios.post('https://pheels.vercel.app/api/login', {email, password} );
       console.log(res.data);
 
       // store JWT in local storage and redirect to home page

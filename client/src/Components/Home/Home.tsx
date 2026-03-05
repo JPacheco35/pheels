@@ -4,6 +4,9 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import PageTransition from '../PageTransition/PageTransition.tsx';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
+
 export default function Home() {
   const [auth, setAuth] = useState<'loading' | 'valid' | 'invalid'>('loading');
 
@@ -13,7 +16,7 @@ export default function Home() {
     if (!token) return setAuth('invalid');
 
     axios
-      .get('http://localhost:3000/api/verify', {
+      .get(`${API_URL}/api/verify`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => setAuth('valid'))

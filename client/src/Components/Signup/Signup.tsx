@@ -8,6 +8,7 @@ import { IconArrowLeft } from '@tabler/icons-react';
 import { Text, TextInput, Button, Title, ActionIcon, Stack, Group, Tooltip, } from '@mantine/core';
 import PageTransition from '../PageTransition/PageTransition';
 
+const API_URL = import.meta.env.VITE_API_URL;
 
 import '../../main.css';
 
@@ -61,7 +62,7 @@ function Signup() {
     setPasswordError(null);
     setEmailError(null);
     try {
-      const res = await axios.post('http://localhost:3000/api/signup', { email, username, password });
+      const res = await axios.post(`${API_URL}/api/signup`, { email, username, password });
       if (res.data.authToken) {
         localStorage.setItem('authToken', res.data.authToken);
         navigate('/home');

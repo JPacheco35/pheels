@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -9,14 +10,12 @@ const Profile = require('./models/profile');
 const Journal = require('./models/journal');
 const Mood = require('./models/mood');
 const authMiddleware = require('./middleware/auth');
-
-require('dotenv').config();
 app.use(express.json());
 
 const cors = require('cors');
 
 app.use(cors({
-  origin: "https://pheels.vercel.app" || 'http://localhost:5173',
+  origin: ["https://pheels.vercel.app", "http://localhost:5173"],
   credentials: true,
 }));
 

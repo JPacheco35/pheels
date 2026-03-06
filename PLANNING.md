@@ -27,9 +27,9 @@ FRONTEND Must-have features:
 - Home Page
     - Journal Entries Tab
       - Text Editor
-      - View Entries
-        - Delete Entries
-        - Edit Entries
+      - View Entries -- DONE
+      - Delete Entries
+      - Edit Entries
     - Mood Tracker Tab
       - View Moods
       - Delete Moods

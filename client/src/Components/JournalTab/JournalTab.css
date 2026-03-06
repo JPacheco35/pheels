@@ -1,5 +1,14 @@
-.control[data-active] {
-    background: linear-gradient(90deg, #1efcde, #ff02d7, #1efcde) !important;
-    border: none !important;
-    color: #fff !important;
+@keyframes fabGradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+.fab-btn {
+    background: linear-gradient(135deg, #1efcde, #ff02d7, #1efcde);
+    background-size: 200% 200%;
+    animation: fabGradient 3s ease infinite;
+}
+.fab-btn:hover {
+    transform: scale(1.1);
+    transition: transform 0.2s ease;
 }

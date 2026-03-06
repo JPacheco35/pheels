@@ -5,7 +5,9 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
 import '../../main.css';
+import './JournalTab.css';
 import { IconEdit, IconTrash } from '@tabler/icons-react';
+import { createPortal } from 'react-dom';
 
 const API_URL = import.meta.env.VITE_API_URL;
 const PAGE_SIZE = 10;
@@ -34,6 +36,10 @@ function JournalTab() {
   // use state tracking whether edit/delete modals are open
   const [editJournal, setEditJournal] = useState<Journal | null>(null);
   const [deleteJournal, setDeleteJournal] = useState<Journal | null>(null);
+
+  const [addJournal, setAddJournal] = useState(false);
+  const [newTitle, setNewTitle] = useState('');
+  const [newBody, setNewBody] = useState('');
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
@@ -98,6 +104,24 @@ function JournalTab() {
       })
   }
 
+  const handleAdd = () => {
+    axios
+      .post(
+        `${API_URL}/api/journals`,
+        { title: newTitle, body: newBody },
+        {
+          headers: { Authorization: `Bearer ${authToken}` },
+        },
+      )
+      .then((res) => {
+        setJournalList((prev) => [res.data, ...prev]);
+        setNewTitle('');
+        setNewBody('');
+        setAddJournal(false);
+      })
+      .catch((err) => console.log(err));
+  }
+
   return (
     <div>
       <AnimatePresence mode="wait">
@@ -154,7 +178,6 @@ function JournalTab() {
                   ff="Beautiful Every Time, sans-serif"
                   fz={20}
                 >
-                  {/*{journal.title}*/}
                   {formatDate(journal.createdAt)}
                 </Text>
                 <Text
@@ -379,6 +402,120 @@ function JournalTab() {
           </Stack>
         )}
       </Modal>
+
+      <Modal
+        opened={addJournal}
+        onClose={() => setAddJournal(false)}
+        title={
+          <>
+            <span style={{ color: '#ff02d7' }}>New</span> Journal
+          </>
+        }
+        size="xl"
+        centered
+        styles={{
+          content: {
+            background: dark ? 'rgba(15,16,20,0.65)' : 'rgba(214,216,213,0.8)',
+            backdropFilter: 'blur(24px)',
+            border: `1px solid ${dark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`,
+            borderRadius: 20,
+            boxShadow: '0 8px 20px rgba(0,0,0,0.6)',
+          },
+          overlay: { backdropFilter: 'blur(4px)' },
+          title: {
+            fontFamily: 'Beautiful Every Time, sans-serif',
+            fontSize: 24,
+            fontWeight: 900,
+            color: dark ? '#bbb' : '#000',
+          },
+          header: { background: 'transparent' },
+          body: { background: 'transparent' },
+        }}
+      >
+        <Stack gap={12}>
+          <TextInput
+            label="Title:"
+            value={newTitle}
+            onChange={(e) => setNewTitle(e.target.value)}
+            styles={{
+              label: {
+                fontFamily: 'Beautiful Every Time, sans-serif',
+                color: dark ? '#bbb' : '#000',
+                fontSize: 18,
+              },
+              input: {
+                fontFamily: 'Beautiful Every Time, sans-serif',
+                background: dark
+                  ? 'rgba(255,255,255,0.06)'
+                  : 'rgba(0,0,0,0.06)',
+                border: `1px solid ${dark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`,
+                color: dark ? '#bbb' : '#000',
+              },
+            }}
+          />
+          <Textarea
+            label="Content:"
+            autosize
+            minRows={4}
+            value={newBody}
+            onChange={(e) => setNewBody(e.target.value)}
+            styles={{
+              label: {
+                fontFamily: 'Beautiful Every Time, sans-serif',
+                color: dark ? '#bbb' : '#000',
+                fontSize: 18,
+              },
+              input: {
+                fontFamily: 'Beautiful Every Time, sans-serif',
+                background: dark
+                  ? 'rgba(255,255,255,0.06)'
+                  : 'rgba(0,0,0,0.06)',
+                border: `1px solid ${dark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`,
+                color: dark ? '#bbb' : '#000',
+              },
+            }}
+          />
+          <Button
+            onClick={handleAdd}
+            style={{
+              fontFamily: 'Beautiful Every Time, sans-serif',
+              background: 'linear-gradient(90deg, #1efcde, #ff02d7)',
+              border: 'none',
+              color: '#fff',
+            }}
+          >
+            Create
+          </Button>
+        </Stack>
+      </Modal>
+
+      {createPortal(
+        <button
+          className="fab-btn"
+          onClick={() => setAddJournal(true)}
+          style={{
+            position: 'fixed',
+            bottom: 40,
+            right: 35,
+            width: 56,
+            height: 56,
+            borderRadius: '50%',
+            background: 'linear-gradient(135deg, #1efcde, #ff02d7)',
+            border: 'none',
+            fontSize: 28,
+            color: '#fff',
+            cursor: 'pointer',
+            boxShadow: '0 4px 24px rgba(255,2,215,0.4)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 9999,
+          }}
+        >
+          +
+        </button>,
+        document.body,
+      )}
     </div>
   );
 }

@@ -1,4 +1,6 @@
 // LOGIN FORM
+import Logo from '../Logo/Logo.tsx';
+
 const API_URL = import.meta.env.VITE_API_URL;
 import React, { useState } from 'react';
 import {
@@ -91,20 +93,7 @@ function Login() {
             }}
           >
             <Stack gap="xs" justify={'center'} align={'center'}>
-              <Title
-                className={'gradient-glow'}
-                order={1}
-                size={100}
-                style={{
-                  fontFamily: 'Bisikan Senja, serif',
-                  fontStyle: 'italic',
-                  fontSize: 200,
-                  lineHeight: 1,
-                  paddingRight: 20,
-                }}
-              >
-                Pheels
-              </Title>
+              <Logo fontSize={200}/>
 
               <Group mt={-20} justify="center">
                 <Title

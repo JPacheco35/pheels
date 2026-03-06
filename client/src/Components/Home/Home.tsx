@@ -10,92 +10,16 @@ import {
   Divider,
   Group,
   Menu,
-  Paper,
-  Stack,
   Text,
   UnstyledButton,
 } from '@mantine/core';
+import JournalTab from '../JournalTab/JournalTab.tsx';
+import MoodTab from '../MoodTab/MoodTab.tsx';
+import Logo from '../Logo/Logo.tsx';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-const TABS = ['Tab 1', 'Tab 2'];
-
-// ---------------------------------------------------------------------------
-// GlassCard
-// ---------------------------------------------------------------------------
-function GlassCard({
-  children,
-  style = {},
-}: {
-  children: React.ReactNode;
-  style?: React.CSSProperties;
-}) {
-  return (
-    <Paper
-      style={{
-        background: 'rgba(15,16,20,0.65)',
-        backdropFilter: 'blur(24px)',
-        border: '1px solid rgba(255,255,255,0.08)',
-        boxShadow: '0 8px 48px rgba(0,0,0,0.6)',
-        borderRadius: 20,
-        padding: '28px 32px',
-        ...style,
-      }}
-    >
-      {children}
-    </Paper>
-  );
-}
-
-// ---------------------------------------------------------------------------
-// Tab content
-// ---------------------------------------------------------------------------
-function Tab1() {
-  return (
-    <Stack gap={16}>
-      <GlassCard>
-        <Text c="#aaa" ff="Ubuntu, sans-serif" fz={13}>
-          Tab 1 — Section A
-        </Text>
-        <Text c="#555" fz={12} mt={8} ff="Ubuntu, sans-serif">
-          Content goes here
-        </Text>
-      </GlassCard>
-      <GlassCard>
-        <Text c="#aaa" ff="Ubuntu, sans-serif" fz={13}>
-          Tab 1 — Section B
-        </Text>
-        <Text c="#555" fz={12} mt={8} ff="Ubuntu, sans-serif">
-          Content goes here
-        </Text>
-      </GlassCard>
-    </Stack>
-  );
-}
-
-function Tab2() {
-  return (
-    <Stack gap={16}>
-      <GlassCard>
-        <Text c="#aaa" ff="Ubuntu, sans-serif" fz={13}>
-          Tab 2 — Section A
-        </Text>
-        <Text c="#555" fz={12} mt={8} ff="Ubuntu, sans-serif">
-          Content goes here
-        </Text>
-      </GlassCard>
-      <GlassCard>
-        <Text c="#aaa" ff="Ubuntu, sans-serif" fz={13}>
-          Tab 2 — Section B
-        </Text>
-        <Text c="#555" fz={12} mt={8} ff="Ubuntu, sans-serif">
-          Content goes here
-        </Text>
-      </GlassCard>
-    </Stack>
-  );
-}
-
+const TABS = ['Journaling', 'Mood Diary']
 
 export default function Home() {
   const [auth, setAuth] = useState<'loading' | 'valid' | 'invalid'>('loading');
@@ -148,9 +72,9 @@ export default function Home() {
         {/* ---------------------------------------------------------------- */}
         <AppShell.Header
           style={{
-            borderBottom: '1px solid rgba(255,255,255,0.06)',
-            background: 'rgba(15,16,20,0.8)',
-            backdropFilter: 'blur(16px)',
+            borderBottom: '2px solid rgba(255,255,255,0.06)',
+            background: 'rgba(15,16,20,0.4)',
+            backdropFilter: 'blur(160px)',
           }}
         >
           <Box
@@ -165,21 +89,22 @@ export default function Home() {
             }}
           >
             {/* Logo */}
-            <Text
-              component="span"
-              style={{
-                fontFamily: 'Bisikan Senja, serif',
-                fontStyle: 'italic',
-                fontSize: 28,
-                background: 'linear-gradient(135deg, #1efcde, #ff02d7)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                marginRight: 8,
-                lineHeight: 1,
-              }}
-            >
-              Pheels
-            </Text>
+            {/*<Text*/}
+            {/*  component="span"*/}
+            {/*  style={{*/}
+            {/*    fontFamily: 'Bisikan Senja, serif',*/}
+            {/*    fontStyle: 'italic',*/}
+            {/*    fontSize: 28,*/}
+            {/*    background: 'linear-gradient(135deg, #1efcde, #ff02d7)',*/}
+            {/*    WebkitBackgroundClip: 'text',*/}
+            {/*    WebkitTextFillColor: 'transparent',*/}
+            {/*    marginRight: 8,*/}
+            {/*    lineHeight: 1,*/}
+            {/*  }}*/}
+            {/*>*/}
+            {/*  Pheels*/}
+            {/*</Text>*/}
+            <Logo fontSize={50}/>
 
             {/* Tabs */}
             <Group gap={4} style={{ flex: 1 }}>
@@ -312,7 +237,7 @@ export default function Home() {
             }}
           >
             <Box key={activeTab} style={{ animation: 'fadeUp 0.2s ease both' }}>
-              {activeTab === 'Tab 1' ? <Tab1 /> : <Tab2 />}
+              {activeTab === 'Tab 1' ? <JournalTab /> : <MoodTab />}
             </Box>
           </Box>
         </AppShell.Main>

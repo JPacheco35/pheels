@@ -2,11 +2,27 @@ import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import axios from 'axios';
 import PageTransition from '../PageTransition/PageTransition.tsx';
+import {
+  AppShell,
+  Box,
+  Button,
+  Center,
+  Divider,
+  Group,
+  Menu,
+  Paper,
+  Stack,
+  Text,
+  UnstyledButton,
+} from '@mantine/core';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 const TABS = ['Tab 1', 'Tab 2'];
 
+// ---------------------------------------------------------------------------
+// GlassCard
+// ---------------------------------------------------------------------------
 function GlassCard({
   children,
   style = {},
@@ -15,7 +31,7 @@ function GlassCard({
   style?: React.CSSProperties;
 }) {
   return (
-    <div
+    <Paper
       style={{
         background: 'rgba(15,16,20,0.65)',
         backdropFilter: 'blur(24px)',
@@ -27,114 +43,65 @@ function GlassCard({
       }}
     >
       {children}
-    </div>
+    </Paper>
   );
 }
 
+// ---------------------------------------------------------------------------
+// Tab content
+// ---------------------------------------------------------------------------
 function Tab1() {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+    <Stack gap={16}>
       <GlassCard>
-        <p
-          style={{
-            color: '#aaa',
-            fontFamily: 'Ubuntu, sans-serif',
-            fontSize: 13,
-          }}
-        >
+        <Text c="#aaa" ff="Ubuntu, sans-serif" fz={13}>
           Tab 1 — Section A
-        </p>
-        <p
-          style={{
-            color: '#555',
-            fontSize: 12,
-            marginTop: 8,
-            fontFamily: 'Ubuntu, sans-serif',
-          }}
-        >
+        </Text>
+        <Text c="#555" fz={12} mt={8} ff="Ubuntu, sans-serif">
           Content goes here
-        </p>
+        </Text>
       </GlassCard>
       <GlassCard>
-        <p
-          style={{
-            color: '#aaa',
-            fontFamily: 'Ubuntu, sans-serif',
-            fontSize: 13,
-          }}
-        >
+        <Text c="#aaa" ff="Ubuntu, sans-serif" fz={13}>
           Tab 1 — Section B
-        </p>
-        <p
-          style={{
-            color: '#555',
-            fontSize: 12,
-            marginTop: 8,
-            fontFamily: 'Ubuntu, sans-serif',
-          }}
-        >
+        </Text>
+        <Text c="#555" fz={12} mt={8} ff="Ubuntu, sans-serif">
           Content goes here
-        </p>
+        </Text>
       </GlassCard>
-    </div>
+    </Stack>
   );
 }
 
 function Tab2() {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+    <Stack gap={16}>
       <GlassCard>
-        <p
-          style={{
-            color: '#aaa',
-            fontFamily: 'Ubuntu, sans-serif',
-            fontSize: 13,
-          }}
-        >
+        <Text c="#aaa" ff="Ubuntu, sans-serif" fz={13}>
           Tab 2 — Section A
-        </p>
-        <p
-          style={{
-            color: '#555',
-            fontSize: 12,
-            marginTop: 8,
-            fontFamily: 'Ubuntu, sans-serif',
-          }}
-        >
+        </Text>
+        <Text c="#555" fz={12} mt={8} ff="Ubuntu, sans-serif">
           Content goes here
-        </p>
+        </Text>
       </GlassCard>
       <GlassCard>
-        <p
-          style={{
-            color: '#aaa',
-            fontFamily: 'Ubuntu, sans-serif',
-            fontSize: 13,
-          }}
-        >
+        <Text c="#aaa" ff="Ubuntu, sans-serif" fz={13}>
           Tab 2 — Section B
-        </p>
-        <p
-          style={{
-            color: '#555',
-            fontSize: 12,
-            marginTop: 8,
-            fontFamily: 'Ubuntu, sans-serif',
-          }}
-        >
+        </Text>
+        <Text c="#555" fz={12} mt={8} ff="Ubuntu, sans-serif">
           Content goes here
-        </p>
+        </Text>
       </GlassCard>
-    </div>
+    </Stack>
   );
 }
+
 
 export default function Home() {
   const [auth, setAuth] = useState<'loading' | 'valid' | 'invalid'>('loading');
   const [activeTab, setActiveTab] = useState('Tab 1');
-  const [accountOpen, setAccountOpen] = useState(false);
 
-  // verify the user's token --> send user back to login if invalid
+  // check if jwt is valid --> back to login if not
   useEffect(() => {
     const token = localStorage.getItem('authToken');
     if (!token) return setAuth('invalid');
@@ -150,25 +117,20 @@ export default function Home() {
       });
   }, []);
 
-  if (auth === 'loading')
+  // loading animation
+  if (auth === 'loading') {
     return (
       <PageTransition>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            minHeight: '100vh',
-            color: '#555',
-            fontFamily: 'Ubuntu, sans-serif',
-            fontSize: 13,
-          }}
-        >
-          Loading...
-        </div>
+        <Center mih="100vh">
+          <Text c="#555" ff="Ubuntu, sans-serif" fz={13}>
+            Loading...
+          </Text>
+        </Center>
       </PageTransition>
     );
+  }
 
+  // redirect to login if not authenticated
   if (auth === 'invalid') return <Navigate to="/login" replace />;
 
   return (
@@ -180,19 +142,18 @@ export default function Home() {
         }
       `}</style>
 
-      <div style={{ minHeight: '100vh'}}>
-        {/* HEADER */}
-        <div
+      <AppShell header={{ height: 60 }} style={{ minHeight: '100vh' }}>
+        {/* ---------------------------------------------------------------- */}
+        {/* HEADER                                                           */}
+        {/* ---------------------------------------------------------------- */}
+        <AppShell.Header
           style={{
             borderBottom: '1px solid rgba(255,255,255,0.06)',
             background: 'rgba(15,16,20,0.8)',
             backdropFilter: 'blur(16px)',
-            position: 'sticky',
-            top: 0,
-            zIndex: 50,
           }}
         >
-          <div
+          <Box
             style={{
               maxWidth: 900,
               margin: '0 auto',
@@ -204,7 +165,8 @@ export default function Home() {
             }}
           >
             {/* Logo */}
-            <span
+            <Text
+              component="span"
               style={{
                 fontFamily: 'Bisikan Senja, serif',
                 fontStyle: 'italic',
@@ -213,21 +175,21 @@ export default function Home() {
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 marginRight: 8,
+                lineHeight: 1,
               }}
             >
               Pheels
-            </span>
+            </Text>
 
             {/* Tabs */}
-            <div style={{ display: 'flex', gap: 4, flex: 1 }}>
+            <Group gap={4} style={{ flex: 1 }}>
               {TABS.map((tab) => (
-                <button
+                <UnstyledButton
                   key={tab}
                   onClick={() => setActiveTab(tab)}
                   style={{
                     background:
                       activeTab === tab ? 'rgba(255,255,255,0.06)' : 'none',
-                    border: 'none',
                     color: activeTab === tab ? '#f0f2ff' : '#666',
                     fontFamily: 'Ubuntu, sans-serif',
                     fontSize: 13,
@@ -239,140 +201,122 @@ export default function Home() {
                   }}
                 >
                   {tab}
-                </button>
+                </UnstyledButton>
               ))}
-            </div>
+            </Group>
 
-            {/* Account */}
-            <div style={{ position: 'relative' }}>
-              <button
-                onClick={() => setAccountOpen((o) => !o)}
-                style={{
-                  background: 'rgba(255,255,255,0.05)',
+            {/* Account menu */}
+            <Menu
+              position="bottom-end"
+              offset={8}
+              styles={{
+                dropdown: {
+                  background: 'rgba(15,16,20,0.95)',
                   border: '1px solid rgba(255,255,255,0.08)',
-                  color: '#aaa',
+                  borderRadius: 12,
+                  padding: 6,
+                  minWidth: 150,
+                  animation: 'fadeUp 0.15s ease both',
+                },
+                item: {
+                  color: '#888',
                   fontFamily: 'Ubuntu, sans-serif',
                   fontSize: 13,
-                  padding: '6px 14px',
-                  borderRadius: 20,
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 8,
-                }}
-              >
-                <div
+                  borderRadius: 8,
+                  background: 'none',
+                  '&:hover': {
+                    color: '#f0f2ff',
+                    background: 'rgba(255,255,255,0.04)',
+                  },
+                },
+              }}
+            >
+              <Menu.Target>
+                <Button
+                  variant="subtle"
                   style={{
-                    width: 22,
-                    height: 22,
-                    borderRadius: '50%',
-                    background: 'linear-gradient(135deg, #1efcde33, #ff02d733)',
-                    border: '1px solid rgba(255,255,255,0.1)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: 11,
-                    color: '#ccc',
-                  }}
-                >
-                  U
-                </div>
-                Account
-              </button>
-
-              {accountOpen && (
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: 'calc(100% + 8px)',
-                    right: 0,
-                    background: 'rgba(15,16,20,0.95)',
+                    background: 'rgba(255,255,255,0.05)',
                     border: '1px solid rgba(255,255,255,0.08)',
-                    borderRadius: 12,
-                    padding: 6,
-                    minWidth: 150,
-                    animation: 'fadeUp 0.15s ease both',
+                    color: '#aaa',
+                    fontFamily: 'Ubuntu, sans-serif',
+                    fontSize: 13,
+                    padding: '6px 14px',
+                    borderRadius: 20,
+                    cursor: 'pointer',
+                    height: 'auto',
+                  }}
+                  leftSection={
+                    <Box
+                      style={{
+                        width: 22,
+                        height: 22,
+                        borderRadius: '50%',
+                        background:
+                          'linear-gradient(135deg, #1efcde33, #ff02d733)',
+                        border: '1px solid rgba(255,255,255,0.1)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: 11,
+                        color: '#ccc',
+                      }}
+                    >
+                      U
+                    </Box>
+                  }
+                >
+                  Account
+                </Button>
+              </Menu.Target>
+
+              <Menu.Dropdown>
+                <Menu.Item>Profile</Menu.Item>
+                <Menu.Item>Settings</Menu.Item>
+                <Divider
+                  style={{
+                    borderColor: 'rgba(255,255,255,0.06)',
+                    margin: '4px 0',
+                  }}
+                />
+                <Menu.Item
+                  style={{ color: '#888' }}
+                  styles={{
+                    item: {
+                      '&:hover': {
+                        color: '#ff6b6b',
+                        background: 'rgba(255,107,107,0.06)',
+                      },
+                    },
+                  }}
+                  onClick={() => {
+                    localStorage.removeItem('authToken');
+                    window.location.href = '/login';
                   }}
                 >
-                  {['Profile', 'Settings'].map((item) => (
-                    <button
-                      key={item}
-                      style={{
-                        display: 'block',
-                        width: '100%',
-                        background: 'none',
-                        border: 'none',
-                        color: '#888',
-                        fontFamily: 'Ubuntu, sans-serif',
-                        fontSize: 13,
-                        padding: '9px 12px',
-                        borderRadius: 8,
-                        textAlign: 'left',
-                        cursor: 'pointer',
-                      }}
-                      onMouseEnter={(e) =>
-                        (e.currentTarget.style.color = '#f0f2ff')
-                      }
-                      onMouseLeave={(e) =>
-                        (e.currentTarget.style.color = '#888')
-                      }
-                    >
-                      {item}
-                    </button>
-                  ))}
-                  <div
-                    style={{
-                      height: 1,
-                      background: 'rgba(255,255,255,0.06)',
-                      margin: '4px 0',
-                    }}
-                  />
-                  <button
-                    style={{
-                      display: 'block',
-                      width: '100%',
-                      background: 'none',
-                      border: 'none',
-                      color: '#888',
-                      fontFamily: 'Ubuntu, sans-serif',
-                      fontSize: 13,
-                      padding: '9px 12px',
-                      borderRadius: 8,
-                      textAlign: 'left',
-                      cursor: 'pointer',
-                    }}
-                    onMouseEnter={(e) =>
-                      (e.currentTarget.style.color = '#ff6b6b')
-                    }
-                    onMouseLeave={(e) => (e.currentTarget.style.color = '#888')}
-                    onClick={() => {
-                      localStorage.removeItem('authToken');
-                      window.location.href = '/login';
-                    }}
-                  >
-                    Log out
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
+                  Log out
+                </Menu.Item>
+              </Menu.Dropdown>
+            </Menu>
+          </Box>
+        </AppShell.Header>
 
-        {/* CONTENT */}
-        <div style={{ maxWidth: 900, margin: '0 auto', padding: '32px 24px' }}>
-          <div key={activeTab} style={{ animation: 'fadeUp 0.2s ease both' }}>
-            {activeTab === 'Tab 1' ? <Tab1 /> : <Tab2 />}
-          </div>
-        </div>
-
-        {/* Click outside to close account dropdown */}
-        {accountOpen && (
-          <div
-            style={{ position: 'fixed', inset: 0, zIndex: 49 }}
-            onClick={() => setAccountOpen(false)}
-          />
-        )}
-      </div>
+        {/* ---------------------------------------------------------------- */}
+        {/* CONTENT                                                          */}
+        {/* ---------------------------------------------------------------- */}
+        <AppShell.Main>
+          <Box
+            style={{
+              maxWidth: 900,
+              margin: '0 auto',
+              padding: '32px 24px',
+            }}
+          >
+            <Box key={activeTab} style={{ animation: 'fadeUp 0.2s ease both' }}>
+              {activeTab === 'Tab 1' ? <Tab1 /> : <Tab2 />}
+            </Box>
+          </Box>
+        </AppShell.Main>
+      </AppShell>
     </PageTransition>
   );
 }

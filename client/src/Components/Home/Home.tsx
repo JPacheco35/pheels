@@ -3,6 +3,7 @@ import { Navigate } from 'react-router-dom';
 import axios from 'axios';
 import PageTransition from '../PageTransition/PageTransition.tsx';
 import {
+  ActionIcon,
   AppShell,
   Box,
   Button,
@@ -12,18 +13,25 @@ import {
   Menu,
   Text,
   UnstyledButton,
+  useComputedColorScheme,
+  useMantineColorScheme,
 } from '@mantine/core';
 import JournalTab from '../JournalTab/JournalTab.tsx';
 import MoodTab from '../MoodTab/MoodTab.tsx';
 import Logo from '../Logo/Logo.tsx';
+import { IconMoonStars, IconSun } from '@tabler/icons-react';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 const TABS = ['Journaling', 'Mood Diary']
 
+
 export default function Home() {
   const [auth, setAuth] = useState<'loading' | 'valid' | 'invalid'>('loading');
-  const [activeTab, setActiveTab] = useState('Tab 1');
+  const [activeTab, setActiveTab] = useState('Journaling');
+
+  const { setColorScheme } = useMantineColorScheme();
+  const colorScheme = useComputedColorScheme('dark');
 
   // check if jwt is valid --> back to login if not
   useEffect(() => {
@@ -72,8 +80,9 @@ export default function Home() {
         {/* ---------------------------------------------------------------- */}
         <AppShell.Header
           style={{
-            borderBottom: '2px solid rgba(255,255,255,0.06)',
-            background: 'rgba(15,16,20,0.4)',
+            borderBottom:
+              '2px solid light-dark(rgba(0,0,0,0.08), rgba(214,216,213,0.12))',
+            background: 'light-dark(rgba(255,255,255,0.6), rgba(15,16,20,0.4))',
             backdropFilter: 'blur(160px)',
           }}
         >
@@ -88,23 +97,7 @@ export default function Home() {
               gap: 24,
             }}
           >
-            {/* Logo */}
-            {/*<Text*/}
-            {/*  component="span"*/}
-            {/*  style={{*/}
-            {/*    fontFamily: 'Bisikan Senja, serif',*/}
-            {/*    fontStyle: 'italic',*/}
-            {/*    fontSize: 28,*/}
-            {/*    background: 'linear-gradient(135deg, #1efcde, #ff02d7)',*/}
-            {/*    WebkitBackgroundClip: 'text',*/}
-            {/*    WebkitTextFillColor: 'transparent',*/}
-            {/*    marginRight: 8,*/}
-            {/*    lineHeight: 1,*/}
-            {/*  }}*/}
-            {/*>*/}
-            {/*  Pheels*/}
-            {/*</Text>*/}
-            <Logo fontSize={50}/>
+            <Logo fontSize={50} />
 
             {/* Tabs */}
             <Group gap={4} style={{ flex: 1 }}>
@@ -114,11 +107,17 @@ export default function Home() {
                   onClick={() => setActiveTab(tab)}
                   style={{
                     background:
-                      activeTab === tab ? 'rgba(255,255,255,0.06)' : 'none',
-                    color: activeTab === tab ? '#f0f2ff' : '#666',
-                    fontFamily: 'Ubuntu, sans-serif',
+                      activeTab === tab
+                        ? 'light-dark(rgba(0,0,0,0.06), rgba(255,255,255,0.06))'
+                        : 'none',
+                    color:
+                      activeTab === tab
+                        ? 'light-dark(#1a1b2e, #f0f2ff)'
+                        : 'light-dark(#999, #666)',
+                    fontFamily: 'Beautiful Every Time, sans-serif',
+                    fontStyle: 'bold',
                     fontSize: 13,
-                    fontWeight: 500,
+                    fontWeight: 900,
                     padding: '6px 16px',
                     borderRadius: 8,
                     cursor: 'pointer',
@@ -131,6 +130,27 @@ export default function Home() {
             </Group>
 
             {/* Account menu */}
+            <ActionIcon
+              variant="subtle"
+              size="lg"
+              onClick={() =>
+                setColorScheme(colorScheme === 'dark' ? 'light' : 'dark')
+              }
+              style={{ fontSize: 18 }}
+            >
+              {colorScheme === 'dark' ? (
+                <IconSun
+                  style={{ width: '70%', height: '70%' }}
+                  stroke={1.5}
+                  color="#ffcc00"
+                />
+              ) : (
+                <IconMoonStars
+                  style={{ width: '70%', height: '70%' }}
+                  stroke={1.5}
+                />
+              )}
+            </ActionIcon>
             <Menu
               position="bottom-end"
               offset={8}
@@ -228,7 +248,7 @@ export default function Home() {
         {/* ---------------------------------------------------------------- */}
         {/* CONTENT                                                          */}
         {/* ---------------------------------------------------------------- */}
-        <AppShell.Main>
+        <AppShell.Main style={{ height: '100vh', overflowY: 'auto' }}>
           <Box
             style={{
               maxWidth: 900,
@@ -237,7 +257,7 @@ export default function Home() {
             }}
           >
             <Box key={activeTab} style={{ animation: 'fadeUp 0.2s ease both' }}>
-              {activeTab === 'Tab 1' ? <JournalTab /> : <MoodTab />}
+              {activeTab === 'Journaling' ? <JournalTab /> : <MoodTab />}
             </Box>
           </Box>
         </AppShell.Main>

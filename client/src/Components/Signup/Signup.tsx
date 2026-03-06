@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from '@mantine/form';
-import { useComputedColorScheme, useMantineColorScheme } from '@mantine/core';
 
 import axios from 'axios';
 import { IconArrowLeft } from '@tabler/icons-react';
@@ -33,8 +32,6 @@ const inputStyles = {
 };
 
 function Signup() {
-  const { setColorScheme } = useMantineColorScheme();
-  const colorScheme = useComputedColorScheme('dark');
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [passwordError, setPasswordError] = useState<string | null>(null);
@@ -133,16 +130,6 @@ function Signup() {
                 >
                   a personal diary app
                 </Title>
-                <ActionIcon
-                  variant="subtle"
-                  size="lg"
-                  onClick={() =>
-                    setColorScheme(colorScheme === 'dark' ? 'light' : 'dark')
-                  }
-                  style={{ fontSize: 18 }}
-                >
-                  {colorScheme === 'dark' ? '☀️' : '🌙'}
-                </ActionIcon>
               </Group>
             </Stack>
           </div>

@@ -8,7 +8,6 @@ import {
   TextInput,
   Button,
   Title,
-  ActionIcon,
   Stack, Group,
 } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
@@ -16,16 +15,10 @@ import { useForm } from '@mantine/form';
 import PageTransition from '../PageTransition/PageTransition';
 import '../../main.css';
 import './Login.css';
-import {
-  useComputedColorScheme,
-  useMantineColorScheme,
-} from '@mantine/core';
 import axios from 'axios';
 
 
 function Login() {
-  const { setColorScheme } = useMantineColorScheme();
-  const colorScheme = useComputedColorScheme('dark');
   // const [submitted, setSubmitted] = useState(false);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -107,17 +100,6 @@ function Login() {
                 >
                   a personal diary app
                 </Title>
-
-                <ActionIcon
-                  variant="subtle"
-                  size="lg"
-                  onClick={() =>
-                    setColorScheme(colorScheme === 'dark' ? 'light' : 'dark')
-                  }
-                  style={{ fontSize: 18 }}
-                >
-                  {colorScheme === 'dark' ? '☀️' : '🌙'}
-                </ActionIcon>
               </Group>
             </Stack>
           </div>

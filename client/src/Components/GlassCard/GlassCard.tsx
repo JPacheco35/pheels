@@ -1,5 +1,6 @@
 import React from 'react';
 import { Paper } from '@mantine/core';
+import { useMantineColorScheme } from '@mantine/core';
 
 function GlassCard({
   children,
@@ -8,13 +9,15 @@ function GlassCard({
   children: React.ReactNode;
   style?: React.CSSProperties;
 }) {
+  const { colorScheme } = useMantineColorScheme();
+  const dark = colorScheme === 'dark';
+
   return (
     <Paper
       style={{
-        background: 'rgba(15,16,20,0.65)',
+        background: dark ? 'rgba(15,16,20,0.65)' : 'rgba(255,255,255,0.65)',
         backdropFilter: 'blur(24px)',
-        border: '1px solid rgba(255,255,255,0.08)',
-        boxShadow: '0 8px 48px rgba(0,0,0,0.6)',
+        border: `1px solid ${dark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,255,0.08)'}`,
         borderRadius: 20,
         padding: '28px 32px',
         ...style,
@@ -24,4 +27,5 @@ function GlassCard({
     </Paper>
   );
 }
+
 export default GlassCard;

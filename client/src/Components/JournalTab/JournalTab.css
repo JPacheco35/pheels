@@ -1,0 +1,5 @@
+.control[data-active] {
+    background: linear-gradient(90deg, #1efcde, #ff02d7, #1efcde) !important;
+    border: none !important;
+    color: #fff !important;
+}

@@ -2,6 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { MantineProvider, createTheme, ColorSchemeScript } from '@mantine/core';
 import '@mantine/core/styles.css';
+import './main.css';
 
 import App from './Components/App/App.tsx';
 import Background from './Components/Background/Background.tsx';

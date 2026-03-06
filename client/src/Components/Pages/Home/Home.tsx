@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import axios from 'axios';
-import PageTransition from '../PageTransition/PageTransition.tsx';
+import FadeInPageTransition from '../../Animations/FadeInPageTransition/FadeInPageTransition.tsx';
 import {
   ActionIcon,
   AppShell,
@@ -16,9 +16,9 @@ import {
   useComputedColorScheme,
   useMantineColorScheme,
 } from '@mantine/core';
-import JournalTab from '../JournalTab/JournalTab.tsx';
-import MoodTab from '../MoodTab/MoodTab.tsx';
-import Logo from '../Logo/Logo.tsx';
+import JournalTab from '../../Tabs/JournalTab/JournalTab.tsx';
+import MoodTab from '../../Tabs/MoodTab/MoodTab.tsx';
+import Logo from '../../UI/Logo/Logo.tsx';
 import { IconMoonStars, IconSun } from '@tabler/icons-react';
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -52,13 +52,13 @@ export default function Home() {
   // loading animation
   if (auth === 'loading') {
     return (
-      <PageTransition>
+      <FadeInPageTransition>
         <Center mih="100vh">
           <Text c="#555" ff="Ubuntu, sans-serif" fz={13}>
             Loading...
           </Text>
         </Center>
-      </PageTransition>
+      </FadeInPageTransition>
     );
   }
 
@@ -66,7 +66,7 @@ export default function Home() {
   if (auth === 'invalid') return <Navigate to="/login" replace />;
 
   return (
-    <PageTransition>
+    <FadeInPageTransition>
       <style>{`
         @keyframes fadeUp {
           from { opacity: 0; transform: translateY(6px); }
@@ -262,6 +262,6 @@ export default function Home() {
           </Box>
         </AppShell.Main>
       </AppShell>
-    </PageTransition>
+    </FadeInPageTransition>
   );
 }

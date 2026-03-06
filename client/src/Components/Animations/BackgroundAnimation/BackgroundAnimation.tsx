@@ -166,7 +166,7 @@ class Sparkle {
   }
 }
 
-export default function Background({ children }: Props) {
+export default function BackgroundAnimation({ children }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const colorScheme = useComputedColorScheme('dark');
   const bgColor = colorScheme === 'dark' ? '#0a0b0f' : '#d6d8d5';

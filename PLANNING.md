@@ -25,20 +25,19 @@ FRONTEND Must-have features:
   - Login Form -- DONE
   - Signup Form -- DONE
 - Home Page
-    - Journal Entries Tab
-      - Text Editor
+    - Journal Entries Tab -- DONE
+      - New Entries -- DONE
       - View Entries -- DONE
-      - Delete Entries
-      - Edit Entries
+      - Delete Entries -- DONE
+      - Edit Entries -- DONE
     - Mood Tracker Tab
       - View Moods
       - Delete Moods
     - Profile Settings Tab
       - Change Username
-      - Change Theme
+      - Change Theme -- DONE
       - Change Color
 
 Nice-to-have features:
-- Light / Dark Mode
-- Cursor Responsive Background
-- Theme Customization
+- Light / Dark Mode -- DONE
+- BackgroundAnimation -- DONE

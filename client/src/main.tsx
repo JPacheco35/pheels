@@ -4,8 +4,8 @@ import { MantineProvider, createTheme, ColorSchemeScript } from '@mantine/core';
 import '@mantine/core/styles.css';
 import './main.css';
 
-import App from './Components/App/App.tsx';
-import Background from './Components/Background/Background.tsx';
+import App from './Components/Pages/App/App.tsx';
+import BackgroundAnimation from './Components/Animations/BackgroundAnimation/BackgroundAnimation.tsx';
 import React from 'react';
 
 const theme = createTheme({
@@ -47,9 +47,9 @@ createRoot(document.getElementById('root')!).render(
        },
        dark: {},
      })}>
-      <Background>
+      <BackgroundAnimation>
         <App />
-      </Background>
+      </BackgroundAnimation>
     </MantineProvider>
   </StrictMode>,
 );

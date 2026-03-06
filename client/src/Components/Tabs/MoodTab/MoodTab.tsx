@@ -1,6 +1,6 @@
 import { Stack, Text } from '@mantine/core';
 import { useMantineColorScheme } from '@mantine/core';
-import GlassCard from '../GlassCard/GlassCard.tsx';
+import GlassCard from '../../UI/GlassCard/GlassCard.tsx';
 import React from 'react';
 
 function MoodTab() {

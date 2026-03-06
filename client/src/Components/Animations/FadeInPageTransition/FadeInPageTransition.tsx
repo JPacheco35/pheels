@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import React from 'react';
 
-export default function PageTransition({
+export default function FadeInPageTransition({
   children,
 }: {
   children: React.ReactNode;

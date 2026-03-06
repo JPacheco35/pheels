@@ -1,12 +1,12 @@
 import { ActionIcon, Button, Group, Modal, Stack, Text, Textarea, TextInput } from '@mantine/core';
 import { useMantineColorScheme, Pagination } from '@mantine/core';
-import GlassCard from '../GlassCard/GlassCard.tsx';
+import GlassCard from '../../UI/GlassCard/GlassCard.tsx';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
-import '../../main.css';
+import '../../../main.css';
 import './JournalTab.css';
-import { IconEdit, IconTrash } from '@tabler/icons-react';
+import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react';
 import { createPortal } from 'react-dom';
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -55,7 +55,14 @@ function JournalTab() {
     const suffix = ['th', 'st', 'nd', 'rd'][((day % 100) - 20) % 10] ?? 'th';
     const month = date.toLocaleDateString('en-US', { month: 'long' });
     const year = date.getFullYear();
-    return `${month} ${day}${suffix}, ${year}`;
+    const time = date
+      .toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true,
+      })
+      .toLowerCase();
+    return `${month} ${day}${suffix}, ${year} ${time}`;
   }
 
   // get user journals
@@ -66,8 +73,13 @@ function JournalTab() {
       })
       .then((res) =>
       {
-        setJournalList(res.data);
-        console.log(res.data);
+        // sort journals from newest to oldest
+        const sorted = res.data.sort(
+          (a: Journal, b: Journal) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+        );
+        setJournalList(sorted);
+        console.log(sorted);
       })
       .catch((err) => console.log(err))
       // .finally(() => setLoading(false));
@@ -77,7 +89,7 @@ function JournalTab() {
   const handleEdit = (id: string, title: string, body: string) => {
     axios
       .patch(
-        `${API_URL}/api/journals/${id}`,
+        `${API_URL}/api/journals/}`,
         { title, body },
         {
           headers: { Authorization: `Bearer ${authToken}` },
@@ -105,8 +117,7 @@ function JournalTab() {
   }
 
   const handleAdd = () => {
-    axios
-      .post(
+      axios.post(
         `${API_URL}/api/journals`,
         { title: newTitle, body: newBody },
         {
@@ -120,7 +131,7 @@ function JournalTab() {
         setAddJournal(false);
       })
       .catch((err) => console.log(err));
-  }
+  };
 
   return (
     <div>
@@ -512,7 +523,7 @@ function JournalTab() {
             zIndex: 9999,
           }}
         >
-          +
+          <IconPlus/>
         </button>,
         document.body,
       )}

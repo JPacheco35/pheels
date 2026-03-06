@@ -224,7 +224,7 @@ app.post('/api/journals', authMiddleware, async (req, res) => {
       updatedAt: new Date()
     });
 
-    res.status(201).json(entry);
+    res.status(200).json(entry);
 
   } catch (err) {
     res.status(500).json({ error: 'Server Error', message: err.message });

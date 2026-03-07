@@ -1,15 +1,15 @@
-import { ActionIcon, Group, Stack, Text } from '@mantine/core';
-import { useMantineColorScheme, Pagination } from '@mantine/core';
-import GlassCard from '../../UI/GlassCard/GlassCard.tsx';
-import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Group, Stack, Text } from '@mantine/core';
+import { useMantineColorScheme, Pagination } from '@mantine/core';
+
 import './JournalTab.css';
-import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react';
-import { createPortal } from 'react-dom';
 import DeleteModal from '../../Modals/DeleteModal/DeleteModal.tsx';
 import EditModal from '../../Modals/EditModal/EditModal.tsx';
 import AddModal from '../../Modals/AddModal/AddModal.tsx';
+import JournalEntry from '../../UI/JournalEntry/JournalEntry.tsx';
+import AddJournalFAB from '../../UI/AddJournalFAB/AddJournalFAB.tsx';
 
 const API_URL = import.meta.env.VITE_API_URL;
 const PAGE_SIZE = 10;
@@ -23,32 +23,37 @@ interface Journal {
 }
 
 function JournalTab() {
+  // user's current JWT token
+  const authToken = localStorage.getItem('authToken');
+
+  // current theme
   const { colorScheme } = useMantineColorScheme();
   const dark = colorScheme === 'dark';
 
+  // colors for labels and content
   const labelColor = dark ? '#bbb' : '#000';
   const contentColor = dark ? '#777' : '#333';
 
+  // list of user's journals
   const [journalList, setJournalList] = useState<Journal[]>([]);
   // const [loading, setLoading] = useState(true);
 
+  // current page of journals
   const [page, setPage] = useState(1);
   const paginated = journalList.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
-  // use state tracking whether edit/delete modals are open
+  // use state tracking whether add/edit/delete modals are open
   const [editJournal, setEditJournal] = useState<Journal | null>(null);
   const [deleteJournal, setDeleteJournal] = useState<Journal | null>(null);
-
   const [addJournal, setAddJournal] = useState(false);
 
+  // changes page when user clicks on pagination button
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
     document.querySelector('main')?.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const authToken = localStorage.getItem('authToken');
-
-  // turn createAt date into readable format (ie. January 1st, 1970}
+  // turn createAt date into readable format (ie. January 1st, 1970 12:00pm}
   function formatDate(dateStr: string) {
     const date = new Date(dateStr);
     const day = date.getDate();
@@ -64,24 +69,6 @@ function JournalTab() {
       .toLowerCase();
     return `${month} ${day}${suffix}, ${year} ${time}`;
   }
-
-  // get user journals
-  useEffect(() => {
-    axios
-      .get(`${API_URL}/api/journals`, {
-        headers: { Authorization: `Bearer ${authToken}` },
-      })
-      .then((res) => {
-        // sort journals from newest to oldest
-        const sorted = res.data.sort(
-          (a: Journal, b: Journal) =>
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-        );
-        setJournalList(sorted);
-        console.log(sorted);
-      })
-      .catch((err) => console.log(err));
-  }, []);
 
   // edit journal in database
   const handleEdit = (id: string, title: string, body: string) => {
@@ -115,7 +102,6 @@ function JournalTab() {
   };
 
   // add journal to database
-  // replace handleAdd with this
   const handleAdd = (title: string, body: string) => {
     axios
       .post(
@@ -130,6 +116,24 @@ function JournalTab() {
       .catch((err) => console.log(err));
   };
 
+  // get user journals on load
+  useEffect(() => {
+    axios
+      .get(`${API_URL}/api/journals`, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      })
+      .then((res) => {
+        // sort journals from newest to oldest
+        const sorted = res.data.sort(
+          (a: Journal, b: Journal) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+        );
+        setJournalList(sorted);
+        console.log(sorted);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
   return (
     <div>
       <AnimatePresence mode="wait">
@@ -142,61 +146,14 @@ function JournalTab() {
         >
           <Stack gap={16} style={{ overflowY: 'auto', maxHeight: '100%' }}>
             {paginated.map((journal) => (
-              <GlassCard key={journal._id}>
-                <Group justify="" align="center" mb={8} gap={5}>
-                  <Text
-                    c={labelColor}
-                    ff="Beautiful Every Time, sans-serif"
-                    fz={35}
-                    fs="bold"
-                    fw={650}
-                  >
-                    {journal.title}
-                  </Text>
-
-                  <ActionIcon
-                    variant="subtle"
-                    aria-label="Settings"
-                    size="md"
-                    color="blue"
-                    onClick={() => setEditJournal(journal)}
-                  >
-                    <IconEdit
-                      style={{ width: '70%', height: '70%' }}
-                      stroke={1.5}
-                    />
-                  </ActionIcon>
-
-                  <ActionIcon
-                    variant="subtle"
-                    aria-label="Settings"
-                    size="md"
-                    color="red"
-                    onClick={() => setDeleteJournal(journal)}
-                  >
-                    <IconTrash
-                      style={{ width: '70%', height: '70%' }}
-                      stroke={1.5}
-                    />
-                  </ActionIcon>
-                </Group>
-
-                <Text
-                  c={labelColor}
-                  ff="Beautiful Every Time, sans-serif"
-                  fz={20}
-                >
-                  {formatDate(journal.createdAt)}
-                </Text>
-                <Text
-                  c={contentColor}
-                  fz={14}
-                  mt={8}
-                  ff="Beautiful Every Time, sans-serif"
-                >
-                  {journal.body}
-                </Text>
-              </GlassCard>
+              <JournalEntry
+                journal={journal}
+                labelColor={labelColor}
+                contentColor={contentColor}
+                formatDate={formatDate}
+                setEditJournal={setEditJournal}
+                setDeleteJournal={setDeleteJournal}
+              />
             ))}
           </Stack>
         </motion.div>
@@ -261,33 +218,8 @@ function JournalTab() {
         handleDelete={handleDelete}
       />
 
-      {createPortal(
-        <button
-          className="fab-btn"
-          onClick={() => setAddJournal(true)}
-          style={{
-            position: 'fixed',
-            bottom: 40,
-            right: 35,
-            width: 56,
-            height: 56,
-            borderRadius: '50%',
-            background: 'linear-gradient(135deg, #1efcde, #ff02d7)',
-            border: 'none',
-            fontSize: 28,
-            color: '#fff',
-            cursor: 'pointer',
-            boxShadow: '0 4px 24px rgba(255,2,215,0.4)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 9999,
-          }}
-        >
-          <IconPlus />
-        </button>,
-        document.body,
-      )}
+      {/*floating action button for adding a new journal*/}
+      <AddJournalFAB onClick={() => setAddJournal(true)} />
     </div>
   );
 }

@@ -30,11 +30,13 @@ FRONTEND Must-have features:
       - View Entries -- DONE
       - Delete Entries -- DONE
       - Edit Entries -- DONE
-    - Mood Tracker Tab
-      - View Moods
-      - Delete Moods
+    - Mood Tracker Tab -- DONE
+      - View Moods -- DONE
+      - Delete Moods -- DONE
     - Profile Settings Tab
       - Change Username
+      - Change Password
+      - Delete Account
       - Change Theme -- DONE
       - Change Color
 

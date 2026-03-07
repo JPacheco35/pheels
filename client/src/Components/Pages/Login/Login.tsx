@@ -33,7 +33,7 @@ function Login() {
     setEmailError(null);
     try {
       const res = await axios.post(`${API_URL}/api/login`, { email, password });
-      console.log(res.data);
+      // console.log(res.data);
 
       // store JWT in local storage and redirect to home page
       if (res.data.authToken) {
@@ -140,7 +140,7 @@ function Login() {
 
             <form
               onSubmit={form.onSubmit((values) => {
-                console.log(values);
+                // console.log(values);
                 handleSubmit(values.email, values.password);
               })}
             >

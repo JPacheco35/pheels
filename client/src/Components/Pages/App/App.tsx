@@ -9,6 +9,7 @@ import Signup from '../Signup/Signup.tsx';
 import Home from '../Home/Home.tsx';
 import Redirect from '../Redirect/Redirect.tsx';
 import Footer from '../Footer/Footer.tsx';
+import Settings from '../Settings/Settings.tsx';
 
 export default function App() {
   return (
@@ -27,6 +28,7 @@ export default function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/home" element={<Home />} />
+            <Route path="/settings" element={<Settings />} />
             <Route path="*" element={<Redirect />} />
           </Routes>
           <Footer />

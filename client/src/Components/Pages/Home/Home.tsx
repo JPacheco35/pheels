@@ -18,6 +18,7 @@ import {
 } from '@mantine/core';
 import JournalTab from '../../Tabs/JournalTab/JournalTab.tsx';
 import MoodTab from '../../Tabs/MoodTab/MoodTab.tsx';
+import Settings from '../../Pages/Settings/Settings.tsx';
 import Logo from '../../Logo/Logo.tsx';
 import { IconMoonStars, IconSun } from '@tabler/icons-react';
 
@@ -28,11 +29,12 @@ const TABS = ['Journaling', 'Mood Diary'];
 export default function Home() {
   const [auth, setAuth] = useState<'loading' | 'valid' | 'invalid'>('loading');
   const [activeTab, setActiveTab] = useState('Journaling');
+  const [username, setUsername] = useState('');
 
   const { setColorScheme } = useMantineColorScheme();
   const colorScheme = useComputedColorScheme('dark');
+  // const navigate = useNavigate();
 
-  // check if jwt is valid --> back to login if not
   useEffect(() => {
     const token = localStorage.getItem('authToken');
     if (!token) return setAuth('invalid');
@@ -46,9 +48,18 @@ export default function Home() {
         localStorage.removeItem('authToken');
         setAuth('invalid');
       });
+
+    axios
+      .get(`${API_URL}/api/profile`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => setUsername(res.data.username))
+      .catch(() => {
+        localStorage.removeItem('authToken');
+        setAuth('invalid');
+      });
   }, []);
 
-  // loading animation
   if (auth === 'loading') {
     return (
       <FadeInPageTransition>
@@ -61,7 +72,6 @@ export default function Home() {
     );
   }
 
-  // redirect to login if not authenticated
   if (auth === 'invalid') return <Navigate to="/login" replace />;
 
   return (
@@ -74,9 +84,6 @@ export default function Home() {
       `}</style>
 
       <AppShell header={{ height: 60 }} style={{ minHeight: '100vh' }}>
-        {/* ---------------------------------------------------------------- */}
-        {/* HEADER                                                           */}
-        {/* ---------------------------------------------------------------- */}
         <AppShell.Header
           style={{
             borderBottom:
@@ -98,7 +105,7 @@ export default function Home() {
           >
             <Logo fontSize={50} />
 
-            {/* Tabs */}
+            {/* visible tabs only */}
             <Group gap={4} style={{ flex: 1 }}>
               {TABS.map((tab) => (
                 <UnstyledButton
@@ -114,7 +121,6 @@ export default function Home() {
                         ? 'light-dark(#1a1b2e, #f0f2ff)'
                         : 'light-dark(#999, #666)',
                     fontFamily: 'Beautiful Every Time, sans-serif',
-                    fontStyle: 'bold',
                     fontSize: 13,
                     fontWeight: 900,
                     padding: '6px 16px',
@@ -128,7 +134,6 @@ export default function Home() {
               ))}
             </Group>
 
-            {/* Account menu */}
             <ActionIcon
               variant="subtle"
               size="lg"
@@ -150,6 +155,7 @@ export default function Home() {
                 />
               )}
             </ActionIcon>
+
             <Menu
               position="bottom-end"
               offset={8}
@@ -168,10 +174,6 @@ export default function Home() {
                   fontSize: 13,
                   borderRadius: 8,
                   background: 'none',
-                  '&:hover': {
-                    color: '#f0f2ff',
-                    background: 'rgba(255,255,255,0.04)',
-                  },
                 },
               }}
             >
@@ -205,17 +207,18 @@ export default function Home() {
                         color: '#ccc',
                       }}
                     >
-                      U
+                      {username.charAt(0).toUpperCase()}
                     </Box>
                   }
                 >
-                  Account
+                  {username}
                 </Button>
               </Menu.Target>
 
               <Menu.Dropdown>
-                <Menu.Item>Profile</Menu.Item>
-                <Menu.Item>Settings</Menu.Item>
+                <Menu.Item onClick={() => setActiveTab('Settings')}>
+                  Settings
+                </Menu.Item>
                 <Divider
                   style={{
                     borderColor: 'rgba(255,255,255,0.06)',
@@ -224,14 +227,6 @@ export default function Home() {
                 />
                 <Menu.Item
                   style={{ color: '#888' }}
-                  styles={{
-                    item: {
-                      '&:hover': {
-                        color: '#ff6b6b',
-                        background: 'rgba(255,107,107,0.06)',
-                      },
-                    },
-                  }}
                   onClick={() => {
                     localStorage.removeItem('authToken');
                     window.location.href = '/login';
@@ -244,19 +239,14 @@ export default function Home() {
           </Box>
         </AppShell.Header>
 
-        {/* ---------------------------------------------------------------- */}
-        {/* CONTENT                                                          */}
-        {/* ---------------------------------------------------------------- */}
         <AppShell.Main style={{ height: '100vh', overflowY: 'auto' }}>
           <Box
-            style={{
-              maxWidth: '85%',
-              margin: '0 auto',
-              padding: '32px 24px',
-            }}
+            style={{ maxWidth: '85%', margin: '0 auto', padding: '32px 24px' }}
           >
             <Box key={activeTab} style={{ animation: 'fadeUp 0.2s ease both' }}>
-              {activeTab === 'Journaling' ? <JournalTab /> : <MoodTab />}
+              {activeTab === 'Journaling' && <JournalTab />}
+              {activeTab === 'Mood Diary' && <MoodTab />}
+              {activeTab === 'Settings' && <Settings />}
             </Box>
           </Box>
         </AppShell.Main>

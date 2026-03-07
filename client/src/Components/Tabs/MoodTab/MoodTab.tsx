@@ -2,6 +2,7 @@ import { Group, Stack, Text } from '@mantine/core';
 import { useMantineColorScheme } from '@mantine/core';
 import React, { useEffect, useState } from 'react';
 import { IconCheck, IconX } from '@tabler/icons-react';
+import MoodEntry from '../../UI/MoodEntry/MoodEntry';
 
 const MOODS = ['😄', '🙂', '😐', '😔', '😢'] as const;
 type Mood = (typeof MOODS)[number];
@@ -16,17 +17,22 @@ interface MoodEntry {
 }
 
 function MoodTab() {
+
+  // user's current JWT token'
   const authToken = localStorage.getItem('authToken');
 
+  // color settings
   const { colorScheme } = useMantineColorScheme();
   const dark = colorScheme === 'dark';
   const contentColor = dark ? '#666' : '#333';
 
+  // current mood selection
   const [selectedMood, setSelectedMood] = useState<Mood | null>(null);
+
+  // list of user's mood entries
   const [moodList, setMoodList] = useState<MoodEntry[]>([]);
 
-  const [hoveredMood, setHoveredMood] = useState<string | null>(null);
-
+  // get user's mood entries on load'
   useEffect(() => {
     axios
       .get(`${API_URL}/api/moods`, {
@@ -43,6 +49,7 @@ function MoodTab() {
       .catch((err) => console.log(err));
   }, []);
 
+  // format date in format MM/DD/YYYY HH:MM AM/PM
   function formatMoodDate(dateStr: string) {
     const date = new Date(dateStr);
     const mm = String(date.getMonth() + 1).padStart(2, '0');
@@ -55,6 +62,7 @@ function MoodTab() {
     return `${mm}/${dd}/${yyyy} ${hh}:${min} ${ampm}`;
   }
 
+  // add mood entry to database
   const handleMoodSubmit = () => {
     if (!selectedMood) return;
     axios
@@ -72,6 +80,7 @@ function MoodTab() {
       .catch((err) => console.log(err));
   };
 
+  // delete mood entry from database
   const handleDeleteMood = (id: string) => {
     axios
       .delete(`${API_URL}/api/moods/${id}`, {
@@ -116,6 +125,7 @@ function MoodTab() {
         </span>{' '}
       </Text>
 
+      {/*mood selection row*/}
       <Group justify="center" gap={12} mt={8}>
         {MOODS.map((mood) => (
           <button
@@ -154,6 +164,8 @@ function MoodTab() {
           </button>
         ))}
       </Group>
+
+      {/*confirm/cancel buttons*/}
       <div
         style={{
           height: 56,
@@ -211,6 +223,7 @@ function MoodTab() {
         )}
       </div>
 
+      {/*grid of past mood entries*/}
       <div
         style={{
           display: 'grid',
@@ -221,56 +234,7 @@ function MoodTab() {
         }}
       >
         {moodList.map((entry) => (
-          // on each entry div:
-          <div
-            key={entry._id}
-            onMouseEnter={() => setHoveredMood(entry._id)}
-            onMouseLeave={() => setHoveredMood(null)}
-            style={{
-              position: 'relative',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: 4,
-              padding: '8px 4px',
-              borderRadius: 12,
-              border: `1px solid ${dark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`,
-            }}
-          >
-            <span style={{ fontSize: 28 }}>{entry.mood}</span>
-            <Text
-              c={contentColor}
-              ff="Beautiful Every Time, sans-serif"
-              fz={11}
-            >
-              {formatMoodDate(entry.createdAt)}
-            </Text>
-
-            {hoveredMood === entry._id && (
-              <button
-                onClick={() => handleDeleteMood(entry._id)}
-                style={{
-                  position: 'absolute',
-                  top: 4,
-                  right: 4,
-                  width: 25,
-                  height: 25,
-                  borderRadius: '50%',
-                  background: 'rgba(250,82,82,0.15)',
-                  color: '#fa5252',
-                  border: '1px solid rgba(250,82,82,0.3)',
-                  fontSize: 11,
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  lineHeight: 1,
-                }}
-              >
-                <IconX />
-              </button>
-            )}
-          </div>
+            <MoodEntry mood={entry} dark={dark} contentColor={contentColor} formatMoodDate={formatMoodDate} handleDeleteMood={handleDeleteMood} />
         ))}
       </div>
     </Stack>

@@ -7,16 +7,16 @@ Tech Stack:
 - Mantine UI
 
 API Must-have features:
-- User Account Creation
+- User Account Creation -- DONE
     - Signup -- DONE
     - Login -- DONE
     - Deletion -- DONE
-- Journal Entries
+- Journal Entries -- DONE
     - Create -- DONE
     - Read -- DONE
     - Update -- DONE
     - Delete -- DONE
-- Mood Tracking
+- Mood Tracking -- DONE
     - Create -- DONE
     - Read -- DONE
 

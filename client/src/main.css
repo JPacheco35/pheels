@@ -1,13 +1,13 @@
 @font-face {
-    font-family: 'Bisikan Senja';
-    src: url('./Fonts/BisikanSenja.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
+  font-family: 'Bisikan Senja';
+  src: url('./Fonts/BisikanSenja.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }
 
 @font-face {
-    font-family: 'Beautiful Every Time';
-    src: url('Fonts/BeautifulEveryTime.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
+  font-family: 'Beautiful Every Time';
+  src: url('Fonts/BeautifulEveryTime.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }

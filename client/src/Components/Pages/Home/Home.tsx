@@ -18,13 +18,12 @@ import {
 } from '@mantine/core';
 import JournalTab from '../../Tabs/JournalTab/JournalTab.tsx';
 import MoodTab from '../../Tabs/MoodTab/MoodTab.tsx';
-import Logo from '../../UI/Logo/Logo.tsx';
+import Logo from '../../Logo/Logo.tsx';
 import { IconMoonStars, IconSun } from '@tabler/icons-react';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-const TABS = ['Journaling', 'Mood Diary']
-
+const TABS = ['Journaling', 'Mood Diary'];
 
 export default function Home() {
   const [auth, setAuth] = useState<'loading' | 'valid' | 'invalid'>('loading');
@@ -251,7 +250,7 @@ export default function Home() {
         <AppShell.Main style={{ height: '100vh', overflowY: 'auto' }}>
           <Box
             style={{
-              maxWidth: 900,
+              maxWidth: '85%',
               margin: '0 auto',
               padding: '32px 24px',
             }}

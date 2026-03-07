@@ -4,7 +4,16 @@ import { useForm } from '@mantine/form';
 
 import axios from 'axios';
 import { IconArrowLeft } from '@tabler/icons-react';
-import { Text, TextInput, Button, Title, ActionIcon, Stack, Group, Tooltip, } from '@mantine/core';
+import {
+  Text,
+  TextInput,
+  Button,
+  Title,
+  ActionIcon,
+  Stack,
+  Group,
+  Tooltip,
+} from '@mantine/core';
 import FadeInPageTransition from '../../Animations/FadeInPageTransition/FadeInPageTransition.tsx';
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -39,14 +48,22 @@ function Signup() {
 
   const form = useForm({
     mode: 'uncontrolled',
-    initialValues: { email: '', username: '', password: '', confirmPassword: '' },
+    initialValues: {
+      email: '',
+      username: '',
+      password: '',
+      confirmPassword: '',
+    },
     validate: {
       email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
-      username: (value) => value.length >= 3 ? null : 'Username must be at least 3 characters',
+      username: (value) =>
+        value.length >= 3 ? null : 'Username must be at least 3 characters',
       password: (value) => {
         if (value.length < 8) return 'Password must be at least 8 characters';
-        if (!/[A-Z]/.test(value)) return 'Password must contain at least one uppercase letter';
-        if (!/[^a-zA-Z0-9]/.test(value)) return 'Password must contain at least one special character';
+        if (!/[A-Z]/.test(value))
+          return 'Password must contain at least one uppercase letter';
+        if (!/[^a-zA-Z0-9]/.test(value))
+          return 'Password must contain at least one special character';
         return null;
       },
       confirmPassword: (value, values) =>
@@ -54,12 +71,20 @@ function Signup() {
     },
   });
 
-  const handleSubmit = async (email: string, username: string, password: string) => {
+  const handleSubmit = async (
+    email: string,
+    username: string,
+    password: string,
+  ) => {
     setLoading(true);
     setPasswordError(null);
     setEmailError(null);
     try {
-      const res = await axios.post(`${API_URL}/api/signup`, { email, username, password });
+      const res = await axios.post(`${API_URL}/api/signup`, {
+        email,
+        username,
+        password,
+      });
       if (res.data.authToken) {
         localStorage.setItem('authToken', res.data.authToken);
         navigate('/home');

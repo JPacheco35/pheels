@@ -1,12 +1,14 @@
 import React from 'react';
 import '@mantine/core/styles.css';
+
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
+
 import Login from '../Login/Login.tsx';
 import Signup from '../Signup/Signup.tsx';
 import Home from '../Home/Home.tsx';
 import Redirect from '../Redirect/Redirect.tsx';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Footer from '../Footer/Footer.tsx';
-import { AnimatePresence } from 'framer-motion';
 
 export default function App() {
   return (

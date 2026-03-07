@@ -1,22 +1,15 @@
 // LOGIN FORM
-import Logo from '../../UI/Logo/Logo.tsx';
+import Logo from '../../Logo/Logo.tsx';
 
 const API_URL = import.meta.env.VITE_API_URL;
 import React, { useState } from 'react';
-import {
-  Text,
-  TextInput,
-  Button,
-  Title,
-  Stack, Group,
-} from '@mantine/core';
+import { Text, TextInput, Button, Title, Stack, Group } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from '@mantine/form';
 import FadeInPageTransition from '../../Animations/FadeInPageTransition/FadeInPageTransition.tsx';
 import '../../../main.css';
 import './Login.css';
 import axios from 'axios';
-
 
 function Login() {
   // const [submitted, setSubmitted] = useState(false);
@@ -33,13 +26,13 @@ function Login() {
     },
   });
 
-  const handleSubmit = async (email: string, password: string ) => {
+  const handleSubmit = async (email: string, password: string) => {
     // POST
     setLoading(true);
     setPasswordError(null);
     setEmailError(null);
     try {
-      const res = await axios.post(`${API_URL}/api/login`, {email, password} );
+      const res = await axios.post(`${API_URL}/api/login`, { email, password });
       console.log(res.data);
 
       // store JWT in local storage and redirect to home page
@@ -47,13 +40,16 @@ function Login() {
         localStorage.setItem('authToken', res.data.authToken); // save for later requests
         navigate('/home');
       }
-    }
-    catch (err: any) {
+    } catch (err: any) {
       const msg = err.response?.data?.error || 'Something went wrong.';
-      if (msg.includes('email')) { setEmailError(msg); }
-      else { setPasswordError(msg); }
+      if (msg.includes('email')) {
+        setEmailError(msg);
+      } else {
+        setPasswordError(msg);
+      }
+    } finally {
+      setLoading(false);
     }
-    finally { setLoading(false); }
   };
 
   return (
@@ -86,7 +82,7 @@ function Login() {
             }}
           >
             <Stack gap="xs" justify={'center'} align={'center'}>
-              <Logo fontSize={200}/>
+              <Logo fontSize={200} />
 
               <Group mt={-20} justify="center">
                 <Title

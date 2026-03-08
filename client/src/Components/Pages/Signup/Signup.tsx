@@ -11,14 +11,15 @@ import {
   Title,
   ActionIcon,
   Stack,
-  Group,
   Tooltip,
 } from '@mantine/core';
-import FadeInPageTransition from '../../Animations/FadeInPageTransition/FadeInPageTransition.tsx';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 import '../../../main.css';
+import Logo from '../../UI/Logo/Logo.tsx';
+import GlassCard from '../../UI/GlassCard/GlassCard.tsx';
+import FadeInPageTransition from '../../Animations/FadeInPageTransition/FadeInPageTransition.tsx';
 
 const inputStyles = {
   label: {
@@ -43,6 +44,8 @@ const inputStyles = {
 function Signup() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+
+  // error state management
   const [passwordError, setPasswordError] = useState<string | null>(null);
   const [emailError, setEmailError] = useState<string | null>(null);
 
@@ -71,6 +74,7 @@ function Signup() {
     },
   });
 
+  // send signup form and create new account
   const handleSubmit = async (
     email: string,
     username: string,
@@ -109,7 +113,7 @@ function Signup() {
           alignItems: 'center',
           justifyContent: 'center',
           minHeight: '100vh',
-          width: '100%',
+          marginTop: '-20px',
         }}
       >
         <div
@@ -121,171 +125,138 @@ function Signup() {
           }}
         >
           {/* Header */}
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginBottom: 24,
-            }}
-          >
-            <Stack gap="xs" justify="center" align="center">
-              <Title
-                className="gradient-glow"
-                order={1}
-                style={{
-                  fontFamily: 'Bisikan Senja, serif',
-                  fontStyle: 'italic',
-                  fontSize: 100,
-                  lineHeight: 1,
-                  paddingRight: 20,
-                  overflow: 'visible',
-                }}
-              >
-                Pheels
-              </Title>
-              <Group mt={-20} justify="center">
-                <Title
-                  order={3}
-                  size={30}
-                  style={{
-                    fontFamily: 'Bisikan Senja, serif',
-                    fontStyle: 'italic',
-                  }}
-                >
-                  a personal diary app
-                </Title>
-              </Group>
-            </Stack>
-          </div>
-
-          {/* Glass card */}
-          <div
-            style={{
-              position: 'relative',
-              padding: '48px 40px',
-              borderRadius: 24,
-              background:
-                'light-dark(rgba(255,255,255,0.65), rgba(15,16,20,0.65))',
-              backdropFilter: 'blur(24px)',
-              border:
-                '1px solid light-dark(rgba(0,0,0,0.08), rgba(255,255,255,0.08))',
-              boxShadow:
-                'light-dark(0 8px 48px rgba(0,0,0,0.12), 0 8px 48px rgba(0,0,0,0.6))',
-            }}
-          >
-            {/* Back button — top right */}
-            <div style={{ position: 'absolute', top: 16, left: 16 }}>
-              <Tooltip label="Back to Login" position="left">
-                <ActionIcon
-                  variant="subtle"
-                  size="lg"
-                  onClick={() => navigate('/login')}
-                  style={{ color: 'light-dark(#666, #888)' }}
-                >
-                  <IconArrowLeft size={20} />
-                </ActionIcon>
-              </Tooltip>
-            </div>
-
-            <div style={{ marginBottom: 32, textAlign: 'center' }}>
-              <Text
-                style={{
-                  fontSize: 22,
-                  fontWeight: 700,
-                  letterSpacing: '-0.5px',
-                  color: 'light-dark(#0f1014, #f0f2ff)',
-                  fontFamily: 'Ubuntu, sans-serif',
-                  textAlign: 'center',
-                }}
-              >
-                Create an Account
-              </Text>
-              <Text
-                style={{
-                  fontSize: 13,
-                  color: 'light-dark(#666, #888)',
-                  marginTop: 4,
-                  fontFamily: 'Ubuntu, sans-serif',
-                  textAlign: 'center',
-                }}
-              >
-                Start Journaling Today!
-              </Text>
-            </div>
-
-            <form
-              onSubmit={form.onSubmit((values) =>
-                handleSubmit(values.email, values.username, values.password),
-              )}
+          <Stack gap="xs" justify="center" align="center">
+            <Logo fontSize={200} />
+            <Title
+              order={3}
+              size={30}
+              style={{
+                fontFamily: 'Bisikan Senja, serif',
+                fontStyle: 'italic',
+                marginTop: -20,
+                marginBottom: 10,
+              }}
             >
-              <div
-                style={{ display: 'flex', flexDirection: 'column', gap: 16 }}
-              >
-                {/*email*/}
-                <TextInput
-                  label="Email"
-                  placeholder="you@example.com"
-                  key={form.key('email')}
-                  {...form.getInputProps('email')}
-                  error={emailError || form.errors.email}
-                  styles={inputStyles}
-                />
+              a personal diary app
+            </Title>
+          </Stack>
 
-                {/*username*/}
-                <TextInput
-                  label="Username"
-                  placeholder="yourname"
-                  key={form.key('username')}
-                  {...form.getInputProps('username')}
-                  styles={inputStyles}
-                />
+          <GlassCard>
 
-                {/*password*/}
-                <TextInput
-                  label="Password"
-                  placeholder="••••••••"
-                  type="password"
-                  key={form.key('password')}
-                  {...form.getInputProps('password')}
-                  error={passwordError || form.errors.password}
-                  styles={inputStyles}
-                />
-
-                {/*password verify*/}
-                <TextInput
-                  label="Retype Password"
-                  placeholder="••••••••"
-                  type="password"
-                  key={form.key('confirmPassword')}
-                  {...form.getInputProps('confirmPassword')}
-                  styles={inputStyles}
-                />
+              {/* Back button — top right */}
+              <div style={{ position: 'absolute', top: 16, left: 16 }}>
+                <Tooltip label="Back to Login" position="left">
+                  <ActionIcon
+                    variant="subtle"
+                    size="lg"
+                    onClick={() => navigate('/login')}
+                    style={{ color: 'light-dark(#666, #888)' }}
+                  >
+                    <IconArrowLeft size={20} />
+                  </ActionIcon>
+                </Tooltip>
               </div>
 
-              <Button
-                type="submit"
-                fullWidth
-                mt="xl"
-                loading={loading}
-                disabled={loading}
-                style={{
-                  height: 46,
-                  borderRadius: 12,
-                  background: 'linear-gradient(135deg, #1efcde, #ff02d7)',
-                  border: 'none',
-                  fontSize: 30,
-                  fontWeight: 600,
-                  fontFamily: 'Bisikan Senja, serif',
-                  letterSpacing: '0.3px',
-                  boxShadow: '0 4px 20px rgba(100,148,255,0.35)',
-                  transition: 'transform 0.15s, box-shadow 0.15s',
-                }}
+            {/*subheader*/}
+              <div style={{ marginBottom: 32, textAlign: 'center' }}>
+                <Text
+                  style={{
+                    fontSize: 22,
+                    fontWeight: 700,
+                    letterSpacing: '-0.5px',
+                    color: 'light-dark(#0f1014, #f0f2ff)',
+                    fontFamily: 'Ubuntu, sans-serif',
+                    textAlign: 'center',
+                  }}
+                >
+                  Create an Account
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 13,
+                    color: 'light-dark(#666, #888)',
+                    marginTop: 4,
+                    fontFamily: 'Ubuntu, sans-serif',
+                    textAlign: 'center',
+                  }}
+                >
+                  Start Journaling Today!
+                </Text>
+              </div>
+
+              {/*create account form*/}
+              <form
+                onSubmit={form.onSubmit((values) =>
+                  handleSubmit(values.email, values.username, values.password),
+                )}
               >
-                Create Account
-              </Button>
-            </form>
-          </div>
+                <div
+                  style={{ display: 'flex', flexDirection: 'column', gap: 16 }}
+                >
+                  {/*email*/}
+                  <TextInput
+                    label="Email"
+                    placeholder="you@example.com"
+                    key={form.key('email')}
+                    {...form.getInputProps('email')}
+                    error={emailError || form.errors.email}
+                    styles={inputStyles}
+                  />
+
+                  {/*username*/}
+                  <TextInput
+                    label="Username"
+                    placeholder="yourname"
+                    key={form.key('username')}
+                    {...form.getInputProps('username')}
+                    styles={inputStyles}
+                  />
+
+                  {/*password*/}
+                  <TextInput
+                    label="Password"
+                    placeholder="••••••••"
+                    type="password"
+                    key={form.key('password')}
+                    {...form.getInputProps('password')}
+                    error={passwordError || form.errors.password}
+                    styles={inputStyles}
+                  />
+
+                  {/*password verify*/}
+                  <TextInput
+                    label="Retype Password"
+                    placeholder="••••••••"
+                    type="password"
+                    key={form.key('confirmPassword')}
+                    {...form.getInputProps('confirmPassword')}
+                    styles={inputStyles}
+                  />
+                </div>
+
+                <Button
+                  type="submit"
+                  fullWidth
+                  mt="xl"
+                  loading={loading}
+                  disabled={loading}
+                  style={{
+                    height: 46,
+                    borderRadius: 12,
+                    background: 'linear-gradient(135deg, #1efcde, #ff02d7)',
+                    border: 'none',
+                    fontSize: 30,
+                    fontWeight: 600,
+                    fontFamily: 'Bisikan Senja, serif',
+                    letterSpacing: '0.3px',
+                    boxShadow: '0 4px 20px rgba(100,148,255,0.35)',
+                    transition: 'transform 0.15s, box-shadow 0.15s',
+                  }}
+                >
+                  Create Account
+                </Button>
+              </form>
+          </GlassCard>
         </div>
       </div>
     </FadeInPageTransition>

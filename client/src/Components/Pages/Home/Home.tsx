@@ -15,7 +15,7 @@ import FadeInPageTransition from '../../Animations/FadeInPageTransition/FadeInPa
 import JournalTab from '../../Tabs/JournalTab/JournalTab.tsx';
 import MoodTab from '../../Tabs/MoodTab/MoodTab.tsx';
 import Settings from '../../Pages/Settings/Settings.tsx';
-import Logo from '../../Logo/Logo.tsx';
+import Logo from '../../UI/Logo/Logo.tsx';
 import TabButton from '../../UI/TabButton/TabButton.tsx';
 import ThemeButton from '../../UI/ThemeButton/ThemeButton.tsx';
 import AccountMenu from '../../UI/AccountMenu/AccountMenu.tsx';

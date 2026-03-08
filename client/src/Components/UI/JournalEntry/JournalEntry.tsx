@@ -23,6 +23,8 @@ function JournalEntry({
   return (
     <GlassCard key={journal._id}>
       <Group justify="" align="center" mb={8} gap={5}>
+
+        {/*title*/}
         <Text
           c={labelColor}
           ff="Beautiful Every Time, sans-serif"
@@ -33,6 +35,7 @@ function JournalEntry({
           {journal.title}
         </Text>
 
+        {/*edit button*/}
         <ActionIcon
           variant="subtle"
           aria-label="Settings"
@@ -43,6 +46,7 @@ function JournalEntry({
           <IconEdit style={{ width: '70%', height: '70%' }} stroke={1.5} />
         </ActionIcon>
 
+        {/*delete button*/}
         <ActionIcon
           variant="subtle"
           aria-label="Settings"
@@ -54,12 +58,15 @@ function JournalEntry({
         </ActionIcon>
       </Group>
 
+      {/*sub header*/}
       <Text c={labelColor} ff="Beautiful Every Time, sans-serif" fz={20}>
         {formatDate(journal.createdAt)}
       </Text>
+
+      {/*main body*/}
       <Text
         c={contentColor}
-        fz={14}
+        fz={16}
         mt={8}
         ff="Beautiful Every Time, sans-serif"
       >

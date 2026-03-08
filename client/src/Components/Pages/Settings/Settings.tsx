@@ -212,8 +212,8 @@ function Settings() {
         paddingTop: 32,
         paddingBottom: 64,
         alignItems: 'center',
-        overflowY: 'auto',
-        maxHeight: '100vh',
+        // overflowY: 'auto',
+        // maxHeight: '100vh',
       }}
     >
       {/* Change Username */}

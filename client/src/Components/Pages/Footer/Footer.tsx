@@ -1,5 +1,6 @@
-import { ActionIcon, Text } from '@mantine/core';
 import React from 'react';
+
+import { ActionIcon, Text } from '@mantine/core';
 import { IconBrandGithub } from '@tabler/icons-react';
 
 export default function Footer() {
@@ -11,8 +12,7 @@ export default function Footer() {
         width: '100%',
         textAlign: 'center',
         padding: '5px',
-        borderTop:
-          '1px solid light-dark(rgba(0,0,0,0.08), rgba(255,255,255,0.08))',
+        borderTop: '1px solid light-dark(rgba(0,0,0,0.08), rgba(255,255,255,0.08))',
         background: 'light-dark(rgba(255,255,255,0.65), rgba(15,16,20,0.65))',
         backdropFilter: 'blur(24px)',
         display: 'flex',
@@ -21,9 +21,12 @@ export default function Footer() {
         gap: 8,
       }}
     >
+      {/*get current year*/}
       <Text style={{ fontSize: 13, color: 'light-dark(#666, #888)' }}>
         {new Date().getFullYear()} Pheels
       </Text>
+
+      {/*github icon link to repo*/}
       <ActionIcon
         variant="subtle"
         size="sm"

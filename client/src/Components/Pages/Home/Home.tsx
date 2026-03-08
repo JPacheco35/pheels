@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import axios from 'axios';
-import FadeInPageTransition from '../../Animations/FadeInPageTransition/FadeInPageTransition.tsx';
+import { IconMoonStars, IconSun } from '@tabler/icons-react';
 import {
   ActionIcon,
   AppShell,
@@ -16,29 +16,39 @@ import {
   useComputedColorScheme,
   useMantineColorScheme,
 } from '@mantine/core';
+
+import FadeInPageTransition from '../../Animations/FadeInPageTransition/FadeInPageTransition.tsx';
 import JournalTab from '../../Tabs/JournalTab/JournalTab.tsx';
 import MoodTab from '../../Tabs/MoodTab/MoodTab.tsx';
 import Settings from '../../Pages/Settings/Settings.tsx';
 import Logo from '../../Logo/Logo.tsx';
-import { IconMoonStars, IconSun } from '@tabler/icons-react';
+import TabButton from '../../UI/TabButton/TabButton.tsx';
 
 const API_URL = import.meta.env.VITE_API_URL;
-
 const TABS = ['Journaling', 'Mood Diary'];
 
 export default function Home() {
+  // authentication state
   const [auth, setAuth] = useState<'loading' | 'valid' | 'invalid'>('loading');
+
+  // current active tab
   const [activeTab, setActiveTab] = useState('Journaling');
+
+  // username pulled from db for display
   const [username, setUsername] = useState('');
 
+  // color scheme
   const { setColorScheme } = useMantineColorScheme();
   const colorScheme = useComputedColorScheme('dark');
-  // const navigate = useNavigate();
 
+  // on initial page load
   useEffect(() => {
+
+    // get jwt, kick out if not valid
     const token = localStorage.getItem('authToken');
     if (!token) return setAuth('invalid');
 
+    // verify jwt
     axios
       .get(`${API_URL}/api/verify`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -49,6 +59,7 @@ export default function Home() {
         setAuth('invalid');
       });
 
+    // get user profile
     axios
       .get(`${API_URL}/api/profile`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -58,8 +69,10 @@ export default function Home() {
         localStorage.removeItem('authToken');
         setAuth('invalid');
       });
+
   }, []);
 
+  // loading state
   if (auth === 'loading') {
     return (
       <FadeInPageTransition>
@@ -72,10 +85,14 @@ export default function Home() {
     );
   }
 
+  // kick out if not logged in
   if (auth === 'invalid') return <Navigate to="/login" replace />;
 
+  // regular home page
   return (
     <FadeInPageTransition>
+
+      {/*fade up transition*/}
       <style>{`
         @keyframes fadeUp {
           from { opacity: 0; transform: translateY(6px); }
@@ -83,7 +100,16 @@ export default function Home() {
         }
       `}</style>
 
-      <AppShell header={{ height: 60 }} style={{ minHeight: '100vh' }}>
+      <AppShell
+        header={{
+          height: 60
+        }}
+        style={{
+          minHeight: '100vh'
+        }}
+      >
+
+        {/*header*/}
         <AppShell.Header
           style={{
             borderBottom:
@@ -92,9 +118,11 @@ export default function Home() {
             backdropFilter: 'blur(160px)',
           }}
         >
+
+          {/*box spanning entire width of header*/}
           <Box
             style={{
-              maxWidth: 900,
+              maxWidth: '100%',
               margin: '0 auto',
               padding: '0 24px',
               height: 60,
@@ -103,34 +131,13 @@ export default function Home() {
               gap: 24,
             }}
           >
+            {/*pheels logo (top left)*/}
             <Logo fontSize={50} />
 
-            {/* visible tabs only */}
+            {/* tabs list (Journaling, Mood Diary) */}
             <Group gap={4} style={{ flex: 1 }}>
               {TABS.map((tab) => (
-                <UnstyledButton
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  style={{
-                    background:
-                      activeTab === tab
-                        ? 'light-dark(rgba(0,0,0,0.06), rgba(255,255,255,0.06))'
-                        : 'none',
-                    color:
-                      activeTab === tab
-                        ? 'light-dark(#1a1b2e, #f0f2ff)'
-                        : 'light-dark(#999, #666)',
-                    fontFamily: 'Beautiful Every Time, sans-serif',
-                    fontSize: 13,
-                    fontWeight: 900,
-                    padding: '6px 16px',
-                    borderRadius: 8,
-                    cursor: 'pointer',
-                    transition: 'all 0.15s',
-                  }}
-                >
-                  {tab}
-                </UnstyledButton>
+                <TabButton tab={tab} activeTab={activeTab} setActiveTab={setActiveTab}/>
               ))}
             </Group>
 

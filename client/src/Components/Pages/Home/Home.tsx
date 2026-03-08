@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import axios from 'axios';
-import { IconMoonStars, IconSun } from '@tabler/icons-react';
 import {
-  ActionIcon,
   AppShell,
   Box,
   Button,
@@ -12,7 +10,6 @@ import {
   Group,
   Menu,
   Text,
-  UnstyledButton,
   useComputedColorScheme,
   useMantineColorScheme,
 } from '@mantine/core';
@@ -23,6 +20,7 @@ import MoodTab from '../../Tabs/MoodTab/MoodTab.tsx';
 import Settings from '../../Pages/Settings/Settings.tsx';
 import Logo from '../../Logo/Logo.tsx';
 import TabButton from '../../UI/TabButton/TabButton.tsx';
+import ThemeButton from '../../UI/ThemeButton/ThemeButton.tsx';
 
 const API_URL = import.meta.env.VITE_API_URL;
 const TABS = ['Journaling', 'Mood Diary'];
@@ -141,28 +139,10 @@ export default function Home() {
               ))}
             </Group>
 
-            <ActionIcon
-              variant="subtle"
-              size="lg"
-              onClick={() =>
-                setColorScheme(colorScheme === 'dark' ? 'light' : 'dark')
-              }
-              style={{ fontSize: 18 }}
-            >
-              {colorScheme === 'dark' ? (
-                <IconSun
-                  style={{ width: '70%', height: '70%' }}
-                  stroke={1.5}
-                  color="#ffcc00"
-                />
-              ) : (
-                <IconMoonStars
-                  style={{ width: '70%', height: '70%' }}
-                  stroke={1.5}
-                />
-              )}
-            </ActionIcon>
+            {/*light/dark mode toggle button*/}
+            <ThemeButton colorScheme={colorScheme} setColorScheme={setColorScheme} />
 
+            {/*account menu*/}
             <Menu
               position="bottom-end"
               offset={8}

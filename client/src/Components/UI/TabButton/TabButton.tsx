@@ -22,7 +22,7 @@ function TabButton({tab, activeTab, setActiveTab}: TabButtonProps) {
             ? 'light-dark(#1a1b2e, #f0f2ff)'
             : 'light-dark(#999, #666)',
         fontFamily: 'Beautiful Every Time, sans-serif',
-        fontSize: 13,
+        fontSize: 16,
         fontWeight: 900,
         padding: '6px 16px',
         borderRadius: 8,
